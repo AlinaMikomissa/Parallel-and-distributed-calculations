@@ -34,6 +34,7 @@ public class Queue {
     }
 
     public void push(Integer value) {
+        // додавання елемента
         Node newTail = new Node(value, new AtomicReference<>(null));
         while (true) {
             Node tail = tailRef.get();
@@ -47,6 +48,7 @@ public class Queue {
     }
 
     public Integer pop() throws NoSuchElementException {
+        // видалення елемента
         while (true) {
             Node head = headRef.get();
             Node tail = tailRef.get();
