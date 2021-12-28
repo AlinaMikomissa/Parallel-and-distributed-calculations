@@ -8,7 +8,6 @@ import java.util.List;
 
 public class TramActor extends AbstractActor {
 
-
     private final List<ActorRef> stoppings;
     private ActorRef nearest;
     private final String name;
@@ -21,10 +20,9 @@ public class TramActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder()
-                .matchEquals(StoppingActor.Command.STOPPING_IS_EMPTY, command -> stopOnStopping())
-                .matchEquals(StoppingActor.Command.STOPPING_IS_EMPTY, command -> tryStopOnStopping())
-                .build();
+        return receiveBuilder().matchEquals(StoppingActor.Command.STOPPING_IS_EMPTY, command -> stopOnStopping())
+                               .matchEquals(StoppingActor.Command.STOPPING_IS_FULL, command -> tryStopOnStopping())
+                               .build();
     }
 
     private void tryStopOnStopping() {
@@ -38,9 +36,9 @@ public class TramActor extends AbstractActor {
 
     private void stopOnStopping() {
         nearest.tell(Command.STOP_ON_STOPPING, self());
-        System.out.println(name + " зупинився");
+        System.out.println(name + " — зупинився");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
             if (Math.random() > 0.7) {
                 leave();
             }
@@ -51,7 +49,7 @@ public class TramActor extends AbstractActor {
 
     public void leave() {
         nearest.tell(Command.LEAVING, ActorRef.noSender());
-        System.out.println( name + " покидає зупинку");
+        System.out.println( name + " — покидає зупинку");
     }
 
     public enum Command {

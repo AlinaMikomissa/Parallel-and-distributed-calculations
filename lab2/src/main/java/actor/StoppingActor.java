@@ -21,11 +21,10 @@ public class StoppingActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder()
-                .matchEquals(TramActor.Command.CAN_I_STOP, command -> checkIfAvailable())
-                .matchEquals(TramActor.Command.STOP_ON_STOPPING, command -> regisNewTram())
-                .matchEquals(TramActor.Command.LEAVING, command -> registerLeave())
-                .build();
+        return receiveBuilder().matchEquals(TramActor.Command.CAN_I_STOP, command -> checkIfAvailable())
+                               .matchEquals(TramActor.Command.STOP_ON_STOPPING, command -> regisNewTram())
+                               .matchEquals(TramActor.Command.LEAVING, command -> registerLeave())
+                               .build();
     }
 
     private void registerLeave() {
@@ -42,7 +41,7 @@ public class StoppingActor extends AbstractActor {
             allocated++;
             sender().tell(Command.STOPPING_IS_EMPTY, self());
             if(Objects.equals(allocated, MAX)) {
-                System.out.println(name + " повний");
+                System.out.println(name + " — повна");
             }
         } else {
             sender().tell(Command.STOPPING_IS_FULL, self());
